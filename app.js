@@ -57,38 +57,45 @@ app.post("/etudiants", (req, res)=>{
    )
 })
 
-
-app.put("/etudiants/:id",(req, res)=>{
-   const id= req.params.id;
-   const {nom, age} =req.body;
-
-   cn.query("update etudiant set nom=? , age=? where id=?",[nom, age, id],
-      (err) =>{
+app.put("/etudiants/:id", (req,res)=>{
+   const id = req.params.id;
+    const {nom, age} = req.body;
+   cn.query("update etudiant set nom=?, age=? where id=?", 
+      [nom,age,id], (err) =>{
          if(err){
-            res.send("modification echec", err);
+            res.send("Erreur de modification", err);
             return;
          }
 
-         res.send("etudiant modifié");
+         res.send("Etudiant modifié");
       }
-   )
 
-});
+   )
+})
+
 
 app.delete("/etudiants/:id", (req, res)=>{
    const id= req.params.id;
-   cn.query("Delete from etudiant where id=?",
-      [id], 
-      (err)=>{
+
+   cn.query("delete from etudiant where id = ?", [id], 
+      (err, result)=>{
          if(err){
-            res.send("erreur", err);
+            res.send("Erreur de suppression");
             return;
+         }else if(result.affectedRows === 0){
+            res.send("etudiant introuvable");
+            return;
+         }else{
+
+            res.send("etudiant supprimé");
          }
 
-         res.send("etudiant supprimé");
-      }
-   )
-})
+         
+      });
+
+});
+
+
 app.listen(3000, () => {
    console.log("Serveur démarré sur http://localhost:3000");
 })
