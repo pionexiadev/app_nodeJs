@@ -87,8 +87,8 @@ app.delete("/etudiants/:id", (req, res)=>{
             return;
          }else{
 
-            res.send("etudiant supprimé");
          }
+         res.send("etudiant supprimé")
 
          
       });
